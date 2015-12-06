@@ -39,14 +39,11 @@ public class MainFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
         switch (item.getItemId()) {
             case R.id.action_clearlog:
                 clearMessages();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
