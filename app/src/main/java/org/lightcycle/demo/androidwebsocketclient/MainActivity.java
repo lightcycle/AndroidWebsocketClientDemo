@@ -22,6 +22,7 @@ public class MainActivity extends RoboActionBarActivity {
                     .add(R.id.container, new MainFragment())
                     .commit();
         }
+        startService(new Intent(getBaseContext(), WebsocketService.class));
     }
 
     @Override
@@ -40,5 +41,11 @@ public class MainActivity extends RoboActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(getBaseContext(), WebsocketService.class));
+        super.onDestroy();
     }
 }
