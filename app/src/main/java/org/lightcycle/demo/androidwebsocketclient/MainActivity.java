@@ -1,7 +1,9 @@
 package org.lightcycle.demo.androidwebsocketclient;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,7 +24,6 @@ public class MainActivity extends RoboActionBarActivity {
                     .add(R.id.container, new MainFragment())
                     .commit();
         }
-        startService(new Intent(getBaseContext(), WebsocketService.class));
     }
 
     @Override
@@ -45,7 +46,6 @@ public class MainActivity extends RoboActionBarActivity {
 
     @Override
     protected void onDestroy() {
-        stopService(new Intent(getBaseContext(), WebsocketService.class));
         super.onDestroy();
     }
 }
