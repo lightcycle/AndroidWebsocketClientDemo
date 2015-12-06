@@ -1,8 +1,6 @@
 package org.lightcycle.demo.androidwebsocketclient;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,8 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class MainFragment extends Fragment {
+import roboguice.fragment.RoboFragment;
+import roboguice.inject.InjectView;
+
+public class MainFragment extends RoboFragment {
+    @InjectView(R.id.log_messages_scrollview)
     private ScrollView logMessagesScrollView;
+
+    @InjectView(R.id.log_messages)
     private TextView logMessages;
 
     @Override
@@ -25,11 +29,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        logMessagesScrollView = (ScrollView)view.findViewById(R.id.log_messages_scrollview);
-        logMessages = (TextView)logMessagesScrollView.findViewById(R.id.log_messages);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override

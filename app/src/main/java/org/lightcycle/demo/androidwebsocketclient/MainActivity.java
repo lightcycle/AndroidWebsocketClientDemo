@@ -2,12 +2,16 @@ package org.lightcycle.demo.androidwebsocketclient;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import roboguice.RoboGuice;
+import roboguice.activity.RoboActionBarActivity;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends RoboActionBarActivity {
+    static {
+        RoboGuice.setUseAnnotationDatabases(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
