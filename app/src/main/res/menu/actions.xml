@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item android:id="@+id/action_clearlog" android:title="@string/action_clearlog_title" app:showAsAction="never" />
-    <item android:id="@+id/action_startservice" android:title="@string/action_startservice_title" app:showAsAction="never" />
-    <item android:id="@+id/action_stopservice" android:title="@string/action_stopservice_title" app:showAsAction="never" />
+    <item android:id="@+id/action_connect" android:title="@string/action_connect_title" app:showAsAction="never" />
+    <item android:id="@+id/action_sendtext" android:title="@string/action_sendtext_title" app:showAsAction="never" />
+    <item android:id="@+id/action_disconnect" android:title="@string/action_disconnect_title" app:showAsAction="never" />
 </menu>

@@ -7,9 +7,12 @@
     <string name="pref_server_url">Server URL</string>
     <string name="pref_server_url_key">server_url</string>
     <string name="pref_server_url_default"></string>
+    <string name="bundle_messagelog">messagelog</string>
     <string name="action_clearlog_title">Clear Log</string>
-    <string name="extra_address">extra_address</string>
     <string name="action_startservice_title">Start Service</string>
     <string name="action_stopservice_title">Stop Service</string>
+    <string name="action_connect_title">Connect</string>
+    <string name="action_disconnect_title">Disconnect</string>
+    <string name="action_sendtext_title">Send String</string>
 
 </resources>

@@ -2,38 +2,41 @@ package org.lightcycle.demo.androidwebsocketclient;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 
+import com.koushikdutta.async.callback.CompletedCallback;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
 public class WebsocketService extends Service {
     public static final String BROADCAST_ACTION = WebsocketService.class.getName() + ".BROADCAST";
 
+    private final IBinder binder = new LocalBinder();
+
+    public class LocalBinder extends Binder {
+        WebsocketService getService() {
+            return WebsocketService.this;
+        }
+    }
+
     private WebSocket webSocket;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        sendMessage("Starting service.");
-        String address = intent.getStringExtra(getString(R.string.extra_address));
-        if (address.trim().isEmpty()) {
-            sendMessage("No address specified, not connecting.");
-        } else {
-            connect(address);
-        }
+        sendMessage("Web socket service started.");
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
+        sendMessage("Web socket service destroyed.");
         super.onDestroy();
-        disconnect();
-        sendMessage("Stopped service.");
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return binder;
     }
 
     private void sendMessage(String message) {
@@ -42,8 +45,8 @@ public class WebsocketService extends Service {
         sendBroadcast(intent);
     }
 
-    private void connect(String address) {
-        sendMessage("Connecting to " + address);
+    public void connect(String address) {
+        sendMessage("Connecting to \"" + address + "\"");
         AsyncHttpClient.getDefaultInstance().websocket(address, "example", new AsyncHttpClient.WebSocketConnectCallback() {
             @Override
             public void onCompleted(Exception e, WebSocket webSocket) {
@@ -58,14 +61,35 @@ public class WebsocketService extends Service {
                         sendMessage("Received string \"" + message + "\"");
                     }
                 });
+                webSocket.setClosedCallback(new CompletedCallback() {
+                    @Override
+                    public void onCompleted(Exception e) {
+                        if (e != null) {
+                            sendMessage("Disconnected with exception: " + e.getMessage());
+                        } else {
+                            sendMessage("Disconnected.");
+                        }
+                    }
+                });
                 WebsocketService.this.webSocket = webSocket;
             }
         });
     }
 
-    private void disconnect() {
-        if (webSocket == null) {
-            webSocket.end();
+    public boolean isConnected() {
+        return webSocket != null && webSocket.isOpen();
+    }
+
+    public void disconnect() {
+        if (isConnected()) {
+            webSocket.close();
+        }
+    }
+
+    public void sendText(String text) {
+        if (isConnected()) {
+            sendMessage("Sending string \"" + text + "\"");
+            webSocket.send(text);
         }
     }
 }
