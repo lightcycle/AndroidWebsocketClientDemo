@@ -14,5 +14,6 @@
     <string name="action_connect_title">Connect</string>
     <string name="action_disconnect_title">Disconnect</string>
     <string name="action_sendtext_title">Send String</string>
+    <string name="action_sendbinary_title">Send Binary</string>
 
 </resources>

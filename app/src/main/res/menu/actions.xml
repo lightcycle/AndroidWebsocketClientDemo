@@ -4,5 +4,6 @@
     <item android:id="@+id/action_clearlog" android:title="@string/action_clearlog_title" app:showAsAction="never" />
     <item android:id="@+id/action_connect" android:title="@string/action_connect_title" app:showAsAction="never" />
     <item android:id="@+id/action_sendtext" android:title="@string/action_sendtext_title" app:showAsAction="never" />
+    <item android:id="@+id/action_sendbinary" android:title="@string/action_sendbinary_title" app:showAsAction="never" />
     <item android:id="@+id/action_disconnect" android:title="@string/action_disconnect_title" app:showAsAction="never" />
 </menu>

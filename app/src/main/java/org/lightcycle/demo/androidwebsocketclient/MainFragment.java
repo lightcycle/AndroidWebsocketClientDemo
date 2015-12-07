@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.Random;
+
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
@@ -67,6 +69,7 @@ public class MainFragment extends RoboFragment implements ServiceConnection {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.action_connect).setEnabled(serviceBound && !wsService.isConnected());
         menu.findItem(R.id.action_sendtext).setEnabled(serviceBound && wsService.isConnected());
+        menu.findItem(R.id.action_sendbinary).setEnabled(serviceBound && wsService.isConnected());
         menu.findItem(R.id.action_disconnect).setEnabled(serviceBound && wsService.isConnected());
     }
 
@@ -92,6 +95,14 @@ public class MainFragment extends RoboFragment implements ServiceConnection {
             case R.id.action_sendtext:
                 if (serviceBound) {
                     wsService.sendText(RandomStringUtils.randomAlphabetic(10));
+                }
+                return true;
+            case R.id.action_sendbinary:
+                if (serviceBound) {
+                    Random random = new Random();
+                    byte[] buffer = new byte[10];
+                    random.nextBytes(buffer);
+                    wsService.sendBinary(buffer);
                 }
                 return true;
             case R.id.action_disconnect:

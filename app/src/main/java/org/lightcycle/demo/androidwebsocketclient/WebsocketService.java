@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.koushikdutta.async.ByteBufferList;
+import com.koushikdutta.async.DataEmitter;
 import com.koushikdutta.async.callback.CompletedCallback;
+import com.koushikdutta.async.callback.DataCallback;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
+
+import java.nio.ByteBuffer;
 
 public class WebsocketService extends Service {
     public static final String BROADCAST_ACTION = WebsocketService.class.getName() + ".BROADCAST";
@@ -61,6 +66,18 @@ public class WebsocketService extends Service {
                         sendMessage("Received string \"" + message + "\"");
                     }
                 });
+                webSocket.setDataCallback(new DataCallback() {
+                    @Override
+                    public void onDataAvailable(DataEmitter emitter, ByteBufferList bb) {
+                        ByteBuffer bytes = bb.getAll();
+                        StringBuffer buffer = new StringBuffer();
+                        while (bytes.hasRemaining()) {
+                            buffer.append(String.format("%02X", bytes.get()));
+                        }
+                        sendMessage("Received binary 0x" + buffer.toString());
+                        bb.recycle();
+                    }
+                });
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
                     public void onCompleted(Exception e) {
@@ -90,6 +107,17 @@ public class WebsocketService extends Service {
         if (isConnected()) {
             sendMessage("Sending string \"" + text + "\"");
             webSocket.send(text);
+        }
+    }
+
+    public void sendBinary(byte[] bytes) {
+        if (isConnected()) {
+            StringBuffer buffer = new StringBuffer();
+            for (byte b : bytes) {
+                buffer.append(String.format("%02X", b));
+            }
+            sendMessage("Sending binary 0x" + buffer.toString());
+            webSocket.send(bytes);
         }
     }
 }
